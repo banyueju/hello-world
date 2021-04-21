@@ -1,0 +1,73 @@
+一分钟学会用Python的第三方库openpyxl在Excel中画散点图（真.散点图）
+
+之前在博客上看见不少类似的标题，点进去一看，发现全是照抄的官方文档。
+然而官方文档的demo，出来并不是我们想要的效果：
+
+说好的散点图，出来却是我们通俗定义上的折线图。
+
+直接上代码：
+from openpyxl import Workbook
+from openpyxl.chart import (
+    ScatterChart,
+    Reference,
+    Series,
+)
+
+wb = Workbook()
+ws = wb.active
+rows = [
+    ['Size', 'Batch 1', 'Batch 2'],
+    [2, 40, 30],
+    [3, 40, 25],
+    [4, 50, 30],
+    [5, 30, 25],
+    [6, 25, 35],
+    [7, 20, 40],
+]
+for row in rows:
+    ws.append(row)
+
+chart = ScatterChart()
+chart.title = "Scatter Chart"
+chart.style = 10
+chart.x_axis.title = 'Size'
+chart.y_axis.title = 'Percentage'
+
+xvalues = Reference(ws, min_col=1, min_row=2, max_row=7)
+for i in range(2, 4):
+    values = Reference(ws, min_col=i, min_row=1, max_row=7)
+    series = Series(values, xvalues, title_from_data=True)
+    chart.series.append(series)
+# 第一条散点
+s1 = chart.series[0]
+# 散点标记类型  'auto', 'dash', 'triangle', 'square', 'picture', 'circle', 'dot', 'plus', 'star', 'diamond', 'x'
+s1.marker.symbol = "circle"
+s1.marker.graphicalProperties.solidFill = "0000FF"  # Marker filling 设定标记填充的颜色
+s1.marker.graphicalProperties.line.solidFill = "0000FF"  # Marker outline 标记轮廓的颜色
+s1.graphicalProperties.line.noFill = True  # 关闭连线填充
+
+# 第二条带连线的散点
+s2 = chart.series[1]
+s2.marker.symbol = "circle"
+s2.graphicalProperties.solidFill = "FF0000"
+s2.marker.graphicalProperties.line.solidFill = "FF0000"
+s2.graphicalProperties.dashStyle = "dash"
+s2.graphicalProperties.line.width = 1000  # width in EMUs
+
+# s3 = chart.series[2]
+
+ws.add_chart(chart, "A10")
+wb.save("scatter.xlsx")
+
+效果如下：
+
+
+大家可以根据自己的需要，
+1.读取自己的Excel表格数据，替换上述代码生成的数据：
+        wb = openpyxl.load_workbook('D:\\data.xlsx')  
+        ws = workbook['sheet1']
+	再指定xvalues和values(即x轴，y轴)对应的行、列位就OK了
+		
+2.修改其中的属性值，画出自己定制化的散点图
+
+
