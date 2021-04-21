@@ -54,8 +54,6 @@ s2.marker.graphicalProperties.line.solidFill = "FF0000"
 s2.graphicalProperties.dashStyle = "dash"
 s2.graphicalProperties.line.width = 1000  # width in EMUs
 
-# s3 = chart.series[2]
-
 ws.add_chart(chart, "A10")
 wb.save("scatter.xlsx")
 
