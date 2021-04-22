@@ -1,4 +1,4 @@
-一分钟学会用Python的第三方库openpyxl在Excel中画散点图（真.散点图）
+# 一分钟学会用Python的第三方库openpyxl在Excel中画散点图
 
 之前在博客上看见不少类似的标题，点进去一看，发现全是照抄的官方文档。
 然而官方文档的demo，出来并不是我们想要的效果：
@@ -60,7 +60,7 @@ wb.save("scatter.xlsx")
 效果如下：
 
 
-大家可以根据自己的需要，
+大家可以根据自己的需要
 1.读取自己的Excel表格数据，替换上述代码生成的数据：
         wb = openpyxl.load_workbook('D:\\data.xlsx')  
         ws = workbook['sheet1']
